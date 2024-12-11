@@ -1,0 +1,31 @@
+version: '1'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ts-express-api
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://aurat_aroma_user:aurat_aroma_password@db:5432/aurat_aroma_db
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: aurat_aroma_user
+      POSTGRES_PASSWORD: aurat_aroma_password
+      POSTGRES_DB: aurat_aroma_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
